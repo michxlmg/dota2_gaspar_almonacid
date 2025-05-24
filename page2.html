@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>General Description - Dota 2</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .slide-container {
+        width: 100vw;
+        min-height: 100vh;
+        background-color: #000;
+        position: relative;
+        overflow: hidden;
+      }
+      .title-glow {
+        text-shadow: 0 0 20px rgba(220, 38, 38, 0.8),
+          0 0 40px rgba(220, 38, 38, 0.4);
+        animation: pulse-glow 3s ease-in-out infinite alternate;
+      }
+      .keyword-highlight {
+        background: linear-gradient(
+          45deg,
+          rgba(220, 38, 38, 0.3),
+          rgba(251, 191, 36, 0.3)
+        );
+        border: 2px solid rgba(220, 38, 38, 0.5);
+        text-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
+      }
+      @keyframes pulse-glow {
+        from {
+          text-shadow: 0 0 20px rgba(220, 38, 38, 0.8),
+            0 0 40px rgba(220, 38, 38, 0.4);
+        }
+        to {
+          text-shadow: 0 0 30px rgba(220, 38, 38, 1),
+            0 0 60px rgba(220, 38, 38, 0.6);
+        }
+      }
+      .team-battle {
+        animation: team-float 4s ease-in-out infinite alternate;
+      }
+      @keyframes team-float {
+        from {
+          transform: translateX(-10px) scale(1);
+        }
+        to {
+          transform: translateX(10px) scale(1.05);
+        }
+      }
+      .vs-symbol {
+        animation: vs-pulse 2s ease-in-out infinite;
+        transform-origin: center;
+      }
+      @keyframes vs-pulse {
+        0%,
+        100% {
+          transform: scale(1) rotate(0deg);
+        }
+        50% {
+          transform: scale(1.2) rotate(5deg);
+        }
+      }
+      .ancient-glow {
+        animation: ancient-glow 3s ease-in-out infinite;
+      }
+      @keyframes ancient-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(251, 191, 36, 0.6),
+            0 0 40px rgba(220, 38, 38, 0.4),
+            inset 0 0 20px rgba(251, 191, 36, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 40px rgba(251, 191, 36, 0.9),
+            0 0 80px rgba(220, 38, 38, 0.7),
+            inset 0 0 30px rgba(251, 191, 36, 0.4);
+        }
+      }
+      .grid-pattern {
+        background-image: linear-gradient(
+            rgba(220, 38, 38, 0.1) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(220, 38, 38, 0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: grid-move 20s linear infinite;
+      }
+      @keyframes grid-move {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 50px 50px;
+        }
+      }
+      .fade-in-up {
+        animation: fadeInUp 1s ease-out forwards;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Navbar Styles */
+      .navbar {
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 2px solid rgba(220, 38, 38, 0.5);
+        z-index: 50;
+      }
+
+      .nav-link {
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #dc2626, #fbbf24);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .mobile-menu {
+        transition: transform 0.3s ease;
+      }
+
+      /* Footer Styles */
+      .footer {
+        background-color: rgba(0, 0, 0, 0.9);
+        border-top: 2px solid rgba(220, 38, 38, 0.5);
+      }
+
+      .social-icon {
+        transition: all 0.3s ease;
+      }
+
+      .social-icon:hover {
+        transform: translateY(-5px);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar fixed top-0 left-0 w-full">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <div class="flex items-center">
+            <a href="index.html" class="flex-shrink-0">
+              <img
+                class="h-10 w-auto"
+                src="https://www.citypng.com/public/uploads/preview/hd-dota-2-official-logo-png-701751694788589vbfyq561nz.png"
+                alt="Dota 2 Logo"
+              />
+            </a>
+            <span
+              class="ml-3 text-xl font-bold text-white"
+              style="font-family: 'Orbitron', monospace"
+              >DOTA 2</span
+            >
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <a
+                href="index.html"
+                class="nav-link text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Home</a
+              >
+              <a
+                href="page2.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >General Description</a
+              >
+              <a
+                href="page3.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >History</a
+              >
+
+              <a
+                href="page4.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Heroes</a
+              >
+              <a
+                href="page5.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Map</a
+              >
+              <a
+                href="page6.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Items</a
+              >
+              <a
+                href="page7.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Mechanics</a
+              >
+              <a
+                href="page8.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Objectives</a
+              >
+            </div>
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden">
+            <button
+              id="mobile-menu-button"
+              class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+            >
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile menu, hidden by default -->
+      <div
+        id="mobile-menu"
+        class="mobile-menu md:hidden hidden transform scale-95 opacity-0 transition-all duration-300 ease-in-out"
+      >
+        <div
+          class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black bg-opacity-90 border-t border-red-600"
+        >
+          <a
+            href="index.html"
+            class="text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Home</a
+          >
+          <a
+            href="page2.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >General Description</a
+          >
+          <a
+            href="page3.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >History</a
+          >
+          <a
+            href="page4.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Heroes</a
+          >
+          <a
+            href="page5.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Map</a
+          >
+          <a
+            href="page6.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Items</a
+          >
+          <a
+            href="page7.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Mechanics
+          </a>
+          <a
+            href="page8.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Objectives</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <div class="slide-container grid-pattern relative">
+      <!-- Header -->
+      <div
+        class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-600 via-yellow-500 to-red-600"
+      ></div>
+
+      <!-- Title Section -->
+      <div class="text-center pt-24 pb-8">
+        <h1
+          class="title-glow text-6xl font-black text-white mb-4"
+          style="font-family: 'Orbitron', monospace"
+        >
+          GENERAL DESCRIPTION
+        </h1>
+        <div
+          class="w-32 h-1 bg-gradient-to-r from-red-500 to-yellow-500 mx-auto"
+        ></div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="flex flex-col items-center px-6 md:px-16 space-y-12 mb-16">
+        <!-- MOBA Definition with TEXT -->
+        <div
+          class="keyword-highlight rounded-2xl p-8 fade-in-up max-w-4xl"
+          style="animation-delay: 0.2s"
+        >
+          <div class="text-center">
+            <i class="fas fa-gamepad text-yellow-400 text-4xl mb-4"></i>
+            <h2
+              class="text-4xl font-bold text-white mb-2"
+              style="font-family: 'Orbitron', monospace"
+            >
+              COMPETITIVE MOBA
+            </h2>
+            <p
+              class="text-xl text-gray-300 mt-4"
+              style="font-family: 'Rajdhani', sans-serif"
+            >
+              Dota 2 <strong>is</strong> a <i>popular</i> and
+              <i>competitive</i>
+              video game from the
+              <i>strategic</i> MOBA genre (Multiplayer Online Battle Arena).
+              <u>Furthermore</u>, two teams of five players
+              <strong>face</strong> each other on a
+              <i>symmetrical</i> battlefield. Each player
+              <strong>controls</strong>
+              a
+              <i>unique</i> hero with <i>special</i> abilities. The
+              <i>main</i> goal <strong>is</strong> to destroy the enemy's
+              Ancient, a <i>large</i> structure located in the
+              <i>central</i> part of the base. <br /><br />
+              This <i>strategic</i> objective <strong>requires</strong>
+              <i>effective</i> teamwork, <i>precise</i> positioning,
+              <u>and</u>
+              <i>careful</i> map control to win. <u>Therefore</u>, players
+              <strong>need</strong> to <strong>develop</strong>
+              <i>advanced</i> skills <u>and</u> <strong>master</strong> the
+              <i>complex</i> mechanics of the game.
+            </p>
+          </div>
+        </div>
+        <!-- Title Section -->
+        <div class="text-center pt-24 pb-8">
+          <h1
+            class="title-glow text-6xl font-black text-white mb-4"
+            style="font-family: 'Orbitron', monospace"
+          >
+            TWO TEAMS
+          </h1>
+          <p
+            class="text-green-400 font-bold mt-2"
+            style="font-family: 'Rajdhani', sans-serif"
+          >
+            5 vs 5
+          </p>
+          <div
+            class="w-32 h-1 bg-gradient-to-r from-red-500 to-yellow-500 mx-auto"
+          ></div>
+        </div>
+        <!-- Teams -->
+        <div
+          class="flex flex-col md:flex-row items-center justify-center md:space-x-16 space-y-8 md:space-y-0 fade-in-up"
+          style="animation-delay: 0.4s"
+        >
+          <!-- Team 1 -->
+          <div
+            class="team-battle bg-green-900 bg-opacity-40 rounded-2xl p-6 border-2 border-green-500 border-opacity-50"
+          >
+            <div class="text-center">
+              <i class="fas fa-users text-green-400 text-5xl mb-3"></i>
+              <h3
+                class="text-2xl font-bold text-green-300 mb-2"
+                style="font-family: 'Orbitron', monospace"
+              >
+                THE RADIANT
+              </h3>
+              <div class="flex justify-center space-x-2">
+                <i class="fas fa-user text-green-500 text-xl"></i>
+                <i class="fas fa-user text-green-500 text-xl"></i>
+                <i class="fas fa-user text-green-500 text-xl"></i>
+                <i class="fas fa-user text-green-500 text-xl"></i>
+                <i class="fas fa-user text-green-500 text-xl"></i>
+              </div>
+              <p
+                class="text-green-400 font-semibold mt-2"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                The forces of light
+              </p>
+            </div>
+          </div>
+
+          <!-- VS -->
+          <div class="vs-symbol">
+            <div
+              class="bg-red-600 rounded-full w-24 h-24 flex items-center justify-center border-4 border-yellow-500"
+            >
+              <span
+                class="text-white text-3xl font-black"
+                style="font-family: 'Orbitron', monospace"
+                >VS</span
+              >
+            </div>
+          </div>
+
+          <!-- Team 2 -->
+          <div
+            class="team-battle bg-red-900 bg-opacity-40 rounded-2xl p-6 border-2 border-red-500 border-opacity-50"
+          >
+            <div class="text-center">
+              <i class="fas fa-users text-red-400 text-5xl mb-3"></i>
+              <h3
+                class="text-2xl font-bold text-red-300 mb-2"
+                style="font-family: 'Orbitron', monospace"
+              >
+                THE DIRE
+              </h3>
+              <div class="flex justify-center space-x-2">
+                <i class="fas fa-user text-red-500 text-xl"></i>
+                <i class="fas fa-user text-red-500 text-xl"></i>
+                <i class="fas fa-user text-red-500 text-xl"></i>
+                <i class="fas fa-user text-red-500 text-xl"></i>
+                <i class="fas fa-user text-red-500 text-xl"></i>
+              </div>
+              <p
+                class="text-red-400 font-semibold mt-2"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                The forces of darkness
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+
+    <!-- Footer -->
+    <footer class="footer py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <!-- Logo and Site Name -->
+          <div class="flex items-center mb-4 md:mb-0">
+            <img
+              src="https://www.citypng.com/public/uploads/preview/hd-dota-2-official-logo-png-701751694788589vbfyq561nz.png"
+              alt="Dota 2 Logo"
+              class="h-10 w-auto"
+            />
+            <div class="ml-3">
+              <p
+                class="text-lg font-bold text-white"
+                style="font-family: 'Orbitron', monospace"
+              >
+                DOTA 2 COMPONENTS
+              </p>
+              <p
+                class="text-xs text-gray-400"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                Educational Project - 2025
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Horizontal Separator -->
+        <div
+          class="h-px w-full bg-gradient-to-r from-transparent via-red-600 to-transparent my-6"
+        ></div>
+
+        <!-- Copyright and Links -->
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p
+            class="text-gray-500 text-sm mb-4 md:mb-0"
+            style="font-family: 'Rajdhani', sans-serif"
+          >
+            © 2025 GASPAR ALMONACID YHEFRY MICHAEL - Educational project.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        mobileMenuButton.addEventListener("click", function () {
+          if (mobileMenu.classList.contains("hidden")) {
+            mobileMenu.classList.remove(
+              "hidden",
+              "transform",
+              "scale-95",
+              "opacity-0"
+            );
+            mobileMenu.classList.add("transform", "scale-100", "opacity-100");
+          } else {
+            mobileMenu.classList.add(
+              "hidden",
+              "transform",
+              "scale-95",
+              "opacity-0"
+            );
+            mobileMenu.classList.remove(
+              "transform",
+              "scale-100",
+              "opacity-100"
+            );
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

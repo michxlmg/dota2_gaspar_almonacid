@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>History Information - Dota 2</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .slide-container {
+        width: 100vw;
+        min-height: 100vh;
+        background-color: #000;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .title-glow {
+        text-shadow: 0 0 20px rgba(220, 38, 38, 0.8),
+          0 0 40px rgba(220, 38, 38, 0.4);
+        animation: pulse-glow 3s ease-in-out infinite alternate;
+      }
+
+      .info-card {
+        background: linear-gradient(
+          145deg,
+          rgba(0, 0, 0, 0.8),
+          rgba(26, 26, 26, 0.6)
+        );
+        border: 2px solid rgba(220, 38, 38, 0.3);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        animation: slide-in 1s ease-out forwards;
+      }
+
+      .info-card:hover {
+        border-color: rgba(251, 191, 36, 0.8);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+      }
+
+      .valve-logo {
+        animation: rotate-pulse 6s ease-in-out infinite;
+      }
+
+      .code-glow {
+        text-shadow: 0 0 15px rgba(34, 197, 94, 0.8);
+        animation: code-flicker 4s ease-in-out infinite;
+      }
+
+      .ai-highlight {
+        background: linear-gradient(
+          45deg,
+          rgba(139, 92, 246, 0.3),
+          rgba(59, 130, 246, 0.3)
+        );
+        border: 2px solid rgba(139, 92, 246, 0.6);
+        animation: ai-pulse 3s ease-in-out infinite;
+      }
+
+      @keyframes pulse-glow {
+        from {
+          text-shadow: 0 0 20px rgba(220, 38, 38, 0.8),
+            0 0 40px rgba(220, 38, 38, 0.4);
+        }
+        to {
+          text-shadow: 0 0 30px rgba(220, 38, 38, 1),
+            0 0 60px rgba(220, 38, 38, 0.6);
+        }
+      }
+
+      @keyframes slide-in {
+        from {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes rotate-pulse {
+        0%,
+        100% {
+          transform: rotate(0deg) scale(1);
+        }
+        25% {
+          transform: rotate(90deg) scale(1.1);
+        }
+        50% {
+          transform: rotate(180deg) scale(1);
+        }
+        75% {
+          transform: rotate(270deg) scale(1.1);
+        }
+      }
+
+      @keyframes code-flicker {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      @keyframes ai-pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+          border-color: rgba(139, 92, 246, 0.6);
+        }
+        50% {
+          box-shadow: 0 0 40px rgba(139, 92, 246, 0.8);
+          border-color: rgba(139, 92, 246, 1);
+        }
+      }
+
+      .grid-pattern {
+        background-image: linear-gradient(
+            rgba(220, 38, 38, 0.1) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(220, 38, 38, 0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: grid-move 20s linear infinite;
+      }
+
+      @keyframes grid-move {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 50px 50px;
+        }
+      }
+
+      .date-highlight {
+        background: linear-gradient(
+          45deg,
+          rgba(251, 191, 36, 0.3),
+          rgba(220, 38, 38, 0.3)
+        );
+        animation: date-glow 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes date-glow {
+        from {
+          box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+        }
+        to {
+          box-shadow: 0 0 30px rgba(251, 191, 36, 0.8);
+        }
+      }
+
+      /* Navbar Styles */
+      .navbar {
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 2px solid rgba(220, 38, 38, 0.5);
+        z-index: 50;
+      }
+
+      .nav-link {
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #dc2626, #fbbf24);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .mobile-menu {
+        transition: transform 0.3s ease;
+      }
+
+      /* Footer Styles */
+      .footer {
+        background-color: rgba(0, 0, 0, 0.9);
+        border-top: 2px solid rgba(220, 38, 38, 0.5);
+      }
+
+      .social-icon {
+        transition: all 0.3s ease;
+      }
+
+      .social-icon:hover {
+        transform: translateY(-5px);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar fixed top-0 left-0 w-full">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <div class="flex items-center">
+            <a href="index.html" class="flex-shrink-0">
+              <img
+                class="h-10 w-auto"
+                src="https://www.citypng.com/public/uploads/preview/hd-dota-2-official-logo-png-701751694788589vbfyq561nz.png"
+                alt="Dota 2 Logo"
+              />
+            </a>
+            <span
+              class="ml-3 text-xl font-bold text-white"
+              style="font-family: 'Orbitron', monospace"
+              >DOTA 2</span
+            >
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <a
+                href="index.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Home</a
+              >
+              <a
+                href="page2.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >General Description</a
+              >
+              <a
+                href="page3.html"
+                class="nav-link text-white px-3 py-2 rounded-md text-sm font-medium"
+                >History</a
+              >
+              <a
+                href="page4.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Heroes</a
+              >
+              <a
+                href="page5.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Map</a
+              >
+              <a
+                href="page6.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Items</a
+              >
+              <a
+                href="page7.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Mechanics</a
+              >
+              <a
+                href="page8.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Objectives</a
+              >
+            </div>
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden">
+            <button
+              id="mobile-menu-button"
+              class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+            >
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile menu, hidden by default -->
+      <div
+        id="mobile-menu"
+        class="mobile-menu md:hidden hidden transform scale-95 opacity-0 transition-all duration-300 ease-in-out"
+      >
+        <div
+          class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black bg-opacity-90 border-t border-red-600"
+        >
+          <a
+            href="index.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Home</a
+          >
+          <a
+            href="page2.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >General Description</a
+          >
+          <a
+            href="page3.html"
+            class="text-white block px-3 py-2 rounded-md text-base font-medium"
+            >History</a
+          >
+          <a
+            href="page4.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Heroes</a
+          >
+          <a
+            href="page5.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Map</a
+          >
+          <a
+            href="page6.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Items</a
+          >
+          <a
+            href="page7.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Mechanics
+          </a>
+          <a
+            href="page8.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Objectives</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <div class="slide-container grid-pattern relative">
+      <!-- Header -->
+      <div
+        class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-600 via-yellow-500 to-red-600"
+      ></div>
+
+      <!-- Title Section -->
+      <div class="text-center pt-24 pb-8">
+        <h1
+          class="title-glow text-6xl font-black text-white mb-4"
+          style="font-family: 'Orbitron', monospace"
+        >
+          HISTORY
+        </h1>
+        <div
+          class="w-32 h-1 bg-gradient-to-r from-red-500 to-yellow-500 mx-auto"
+        ></div>
+      </div>
+
+      <!-- Main Content Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-12 pb-8">
+        <!-- Release Information -->
+        <div class="info-card rounded-2xl p-8" style="animation-delay: 0.2s">
+          <div class="text-center mb-6">
+            <i class="fas fa-rocket text-yellow-400 text-5xl mb-4"></i>
+            <h2
+              class="text-4xl font-bold text-white mb-4"
+              style="font-family: 'Orbitron', monospace"
+            >
+              RELEASE
+            </h2>
+          </div>
+
+          <div class="space-y-4">
+            <div class="date-highlight rounded-xl p-4">
+              <div class="flex items-center justify-center">
+                <i
+                  class="fas fa-calendar-alt text-yellow-500 text-2xl mr-3"
+                ></i>
+                <span
+                  class="text-3xl font-bold text-yellow-300"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  JULY 9, 2013
+                </span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-center">
+              <div class="valve-logo mr-4">
+                <i class="fab fa-steam text-blue-400 text-4xl"></i>
+              </div>
+              <div>
+                <p
+                  class="text-2xl font-semibold text-white"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  VALVE CORPORATION
+                </p>
+                <p
+                  class="text-gray-400"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  Developer & Publisher
+                </p>
+              </div>
+            </div>
+            <p
+              class="text-gray-300 mt-4 text-xl"
+              style="font-family: 'Rajdhani', sans-serif"
+            >
+              Dota 2 <strong>is</strong> an <i>official</i> game
+              <strong>released</strong> on July 9, 2013, by Valve Corporation.
+              It <strong>is</strong> a <i>standalone</i> sequel to the
+              <i>well-known</i> Defense of the Ancients (DotA), a mod for
+              Warcraft III. <u>Furthermore</u>, this <i>innovative</i> title
+              <strong>becomes</strong> one of the most <i>popular</i> and
+              <i>competitive</i> esports games worldwide. <u>In addition</u>,
+              Valve <strong>spends</strong> several years developing it,
+              <u>as</u> the team <strong>aims</strong> to
+              <strong>deliver</strong> a <i>refined</i> and
+              <i>professional</i> version of the <i>original</i> mod.
+            </p>
+          </div>
+        </div>
+
+        <!-- Programming Languages -->
+        <div class="info-card rounded-2xl p-8" style="animation-delay: 0.4s">
+          <div class="text-center mb-6">
+            <i class="fas fa-code text-green-400 text-5xl mb-4"></i>
+            <h2
+              class="text-4xl font-bold text-white mb-4"
+              style="font-family: 'Orbitron', monospace"
+            >
+              PROGRAMMING
+            </h2>
+          </div>
+
+          <div class="space-y-4">
+            <div
+              class="bg-gray-900 rounded-xl p-4 border border-green-500 border-opacity-30"
+            >
+              <div class="flex items-center">
+                <i class="fas fa-cogs text-blue-400 text-2xl mr-3"></i>
+                <div>
+                  <p
+                    class="code-glow text-2xl font-bold text-green-300"
+                    style="font-family: 'Orbitron', monospace"
+                  >
+                    C++
+                  </p>
+                  <p
+                    class="text-sm text-gray-400"
+                    style="font-family: 'Rajdhani', sans-serif"
+                  >
+                    Source 2 Engine
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="bg-gray-900 rounded-xl p-4 border border-red-500 border-opacity-30"
+            >
+              <div class="flex items-center">
+                <i class="fas fa-file-code text-red-400 text-2xl mr-3"></i>
+                <div>
+                  <p
+                    class="code-glow text-2xl font-bold text-red-300"
+                    style="font-family: 'Orbitron', monospace"
+                  >
+                    LUA
+                  </p>
+                  <p
+                    class="text-sm text-gray-400"
+                    style="font-family: 'Rajdhani', sans-serif"
+                  >
+                    Game Logic
+                  </p>
+                </div>
+              </div>
+            </div>
+            <p
+              class="text-gray-300 mt-4 text-xl"
+              style="font-family: 'Rajdhani', sans-serif"
+            >
+              The game <strong>runs</strong> on the <i>powerful</i> Source 2
+              engine, which <strong>is</strong> <i>mainly</i>
+              <strong>written</strong> in C++. <u>Moreover</u>, the
+              <i>complex</i> game logic, hero abilities, and user interface
+              <strong>use</strong> Lua, a <i>lightweight</i> but
+              <i>flexible</i> scripting language. <u>Therefore</u>, this setup
+              <strong>offers</strong> <i>efficient</i> performance while
+              <strong>supporting</strong> <i>easy</i> customization and modding
+              for developers.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Section (Full Width) -->
+      <div class="px-12 pb-8">
+        <div class="ai-highlight rounded-3xl p-8" style="animation-delay: 0.6s">
+          <div class="text-center">
+            <i class="fas fa-brain text-purple-400 text-6xl mb-6"></i>
+            <h2
+              class="text-5xl font-black text-white mb-6"
+              style="font-family: 'Orbitron', monospace"
+            >
+              ARTIFICIAL INTELLIGENCE
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="bg-black bg-opacity-50 rounded-xl p-6">
+                <i class="fas fa-robot text-blue-400 text-3xl mb-3"></i>
+                <h3
+                  class="text-2xl font-bold text-blue-300 mb-2"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  OPENAI FIVE
+                </h3>
+                <p
+                  class="text-gray-300"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  <i>Advanced</i> AI System
+                </p>
+              </div>
+
+              <div class="bg-black bg-opacity-50 rounded-xl p-6">
+                <i class="fas fa-trophy text-yellow-400 text-3xl mb-3"></i>
+                <h3
+                  class="text-2xl font-bold text-yellow-300 mb-2"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  DEFEATED PROS
+                </h3>
+                <p
+                  class="text-gray-300"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  <strong>Beat</strong> <i>Top</i> Teams
+                </p>
+              </div>
+
+              <div class="bg-black bg-opacity-50 rounded-xl p-6">
+                <i class="fas fa-chart-line text-green-400 text-3xl mb-3"></i>
+                <h3
+                  class="text-2xl font-bold text-green-300 mb-2"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  ML BREAKTHROUGH
+                </h3>
+                <p
+                  class="text-gray-300"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  <i>Revolutionary</i> Gaming AI Milestone
+                </p>
+              </div>
+            </div>
+            <p
+              class="text-gray-300 mt-4 text-xl"
+              style="font-family: 'Rajdhani', sans-serif"
+            >
+              Dota 2 <strong>is</strong> <strong>used</strong> to
+              <strong>train</strong> <i>advanced</i> artificial intelligence
+              systems. OpenAI Five <strong>is</strong> a <i>revolutionary</i> AI
+              <strong>developed</strong> by OpenAI that
+              <strong>plays</strong> Dota 2 at a <i>professional</i> level.
+              <u>Furthermore</u>, this <i>groundbreaking</i> project
+              <strong>improves</strong> reinforcement learning
+              <u>and</u> decision-making in <i>complex</i> scenarios.
+              <u>Additionally</u>, the AI <strong>shows</strong>
+              <i>remarkable</i> strategic thinking <u>and</u> teamwork,
+              <u>even</u> <strong>defeating</strong> top professional teams.
+              <u>Consequently</u>, this <strong>represents</strong> a
+              <i>major</i> step in the development of <i>advanced</i> gaming AI.
+            </p>
+            <p class="text-gray-300 mt-4 text-xl">
+              This video explains how Dota helped AI.
+              <a
+                href="https://youtu.be/2GAlEqbv6fo?si=-gfvaZkwIbIu9YEY"
+                class="text-gray-300 mt-4 text-xl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <u>https://youtu.be/2GAlEqbv6fo?si=-gfvaZkwIbIu9YEY</u>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <!-- Logo and Site Name -->
+          <div class="flex items-center mb-4 md:mb-0">
+            <img
+              src="https://www.citypng.com/public/uploads/preview/hd-dota-2-official-logo-png-701751694788589vbfyq561nz.png"
+              alt="Dota 2 Logo"
+              class="h-10 w-auto"
+            />
+            <div class="ml-3">
+              <p
+                class="text-lg font-bold text-white"
+                style="font-family: 'Orbitron', monospace"
+              >
+                DOTA 2 COMPONENTS
+              </p>
+              <p
+                class="text-xs text-gray-400"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                Educational Project - 2025
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Horizontal Separator -->
+        <div
+          class="h-px w-full bg-gradient-to-r from-transparent via-red-600 to-transparent my-6"
+        ></div>
+
+        <!-- Copyright and Links -->
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p
+            class="text-gray-500 text-sm mb-4 md:mb-0"
+            style="font-family: 'Rajdhani', sans-serif"
+          >
+            © 2025 GASPAR ALMONACID YHEFRY MICHAEL - Educational project.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        mobileMenuButton.addEventListener("click", function () {
+          if (mobileMenu.classList.contains("hidden")) {
+            mobileMenu.classList.remove(
+              "hidden",
+              "transform",
+              "scale-95",
+              "opacity-0"
+            );
+            mobileMenu.classList.add("transform", "scale-100", "opacity-100");
+          } else {
+            mobileMenu.classList.add(
+              "hidden",
+              "transform",
+              "scale-95",
+              "opacity-0"
+            );
+            mobileMenu.classList.remove(
+              "transform",
+              "scale-100",
+              "opacity-100"
+            );
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

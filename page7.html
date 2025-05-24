@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Component 4 - Gameplay Mechanics</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Usa los estilos de page5.html aquí, puedes copiar y pegar los estilos generales y de navbar/footer */
+      .slide-container {
+        width: 100vw;
+        min-height: 100vh;
+        background-color: #000;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .title-glow {
+        text-shadow: 0 0 20px rgba(220, 38, 38, 0.8),
+          0 0 40px rgba(220, 38, 38, 0.4);
+        animation: pulse-glow 3s ease-in-out infinite alternate;
+      }
+
+      .mechanic-card {
+        background: linear-gradient(
+          145deg,
+          rgba(0, 0, 0, 0.8),
+          rgba(26, 26, 26, 0.6)
+        );
+        border: 2px solid rgba(220, 38, 38, 0.3);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        animation: slide-in 1s ease-out forwards;
+      }
+
+      .mechanic-card:hover {
+        border-color: rgba(251, 191, 36, 0.8);
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
+      }
+
+      .skill-indicator {
+        animation: skill-pulse 4s ease-in-out infinite alternate;
+      }
+
+      .combat-zone {
+        background: linear-gradient(
+          45deg,
+          rgba(220, 38, 38, 0.3),
+          rgba(239, 68, 68, 0.3)
+        );
+        border: 2px solid rgba(220, 38, 38, 0.6);
+        animation: combat-intensity 3s ease-in-out infinite alternate;
+      }
+
+      .vision-area {
+        background: linear-gradient(
+          45deg,
+          rgba(147, 51, 234, 0.3),
+          rgba(168, 85, 247, 0.3)
+        );
+        border: 2px solid rgba(147, 51, 234, 0.6);
+        animation: vision-scan 4s ease-in-out infinite;
+      }
+
+      .timing-critical {
+        animation: timing-flash 2s ease-in-out infinite;
+      }
+
+      .position-marker {
+        animation: position-ping 3s ease-in-out infinite;
+      }
+
+      @keyframes pulse-glow {
+        from {
+          text-shadow: 0 0 20px rgba(220, 38, 38, 0.8),
+            0 0 40px rgba(220, 38, 38, 0.4);
+        }
+        to {
+          text-shadow: 0 0 30px rgba(220, 38, 38, 1),
+            0 0 60px rgba(220, 38, 38, 0.6);
+        }
+      }
+
+      @keyframes slide-in {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes skill-pulse {
+        from {
+          box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+          border-color: rgba(34, 197, 94, 0.6);
+        }
+        to {
+          box-shadow: 0 0 25px rgba(34, 197, 94, 0.8);
+          border-color: rgba(34, 197, 94, 1);
+        }
+      }
+
+      @keyframes combat-intensity {
+        from {
+          box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+          border-color: rgba(220, 38, 38, 0.6);
+        }
+        to {
+          box-shadow: 0 0 35px rgba(239, 68, 68, 0.8);
+          border-color: rgba(239, 68, 68, 1);
+        }
+      }
+
+      @keyframes vision-scan {
+        0%,
+        100% {
+          box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
+          transform: scale(1);
+        }
+        50% {
+          box-shadow: 0 0 30px rgba(168, 85, 247, 0.8);
+          transform: scale(1.02);
+        }
+      }
+
+      @keyframes timing-flash {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      @keyframes position-ping {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 0.8;
+        }
+      }
+
+      .grid-pattern {
+        background-image: linear-gradient(
+            rgba(220, 38, 38, 0.1) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(220, 38, 38, 0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: grid-move 20s linear infinite;
+      }
+
+      @keyframes grid-move {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 50px 50px;
+        }
+      }
+
+      .lasthit-animation {
+        animation: lasthit-strike 2s ease-in-out infinite;
+      }
+
+      @keyframes lasthit-strike {
+        0%,
+        100% {
+          transform: rotate(0deg) scale(1);
+        }
+        25% {
+          transform: rotate(-10deg) scale(1.1);
+        }
+        75% {
+          transform: rotate(10deg) scale(1.1);
+        }
+      }
+
+      .deny-animation {
+        animation: deny-block 2.5s ease-in-out infinite;
+      }
+
+      @keyframes deny-block {
+        0%,
+        100% {
+          transform: translateX(0px);
+        }
+        25% {
+          transform: translateX(-5px);
+        }
+        75% {
+          transform: translateX(5px);
+        }
+      }
+
+      .skill-meter {
+        animation: skill-fill 3s ease-in-out infinite alternate;
+      }
+
+      @keyframes skill-fill {
+        from {
+          width: 60%;
+        }
+        to {
+          width: 95%;
+        }
+      }
+
+      .mechanic-flow {
+        animation: flow-arrow 2s ease-in-out infinite;
+      }
+
+      @keyframes flow-arrow {
+        0%,
+        100% {
+          transform: translateX(0px);
+        }
+        50% {
+          transform: translateX(10px);
+        }
+      }
+      /* Navbar Styles */
+      .navbar {
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 2px solid rgba(220, 38, 38, 0.5);
+        z-index: 50;
+      }
+
+      .nav-link {
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #dc2626, #fbbf24);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .mobile-menu {
+        transition: transform 0.3s ease;
+      }
+
+      /* Footer Styles */
+      .footer {
+        background-color: rgba(0, 0, 0, 0.9);
+        border-top: 2px solid rgba(220, 38, 38, 0.5);
+      }
+
+      .social-icon {
+        transition: all 0.3s ease;
+      }
+
+      .social-icon:hover {
+        transform: translateY(-5px);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar fixed top-0 left-0 w-full">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <div class="flex items-center">
+            <a href="index.html" class="flex-shrink-0">
+              <img
+                class="h-10 w-auto"
+                src="https://www.citypng.com/public/uploads/preview/hd-dota-2-official-logo-png-701751694788589vbfyq561nz.png"
+                alt="Dota 2 Logo"
+              />
+            </a>
+            <span
+              class="ml-3 text-xl font-bold text-white"
+              style="font-family: 'Orbitron', monospace"
+              >DOTA 2</span
+            >
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <a
+                href="index.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Home</a
+              >
+              <a
+                href="page2.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >General Description</a
+              >
+              <a
+                href="page3.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >History</a
+              >
+              <a
+                href="page4.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Heroes</a
+              >
+              <a
+                href="page5.html"
+                class="nav-link text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Map</a
+              >
+              <a
+                href="page6.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Items</a
+              >
+              <a
+                href="page7.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Mechanics
+              </a>
+              <a
+                href="page8.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Objetives</a
+              >
+            </div>
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden">
+            <button
+              id="mobile-menu-button"
+              class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+            >
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile menu, hidden by default -->
+      <div
+        id="mobile-menu"
+        class="mobile-menu md:hidden hidden transform scale-95 opacity-0 transition-all duration-300 ease-in-out"
+      >
+        <div
+          class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black bg-opacity-90 border-t border-red-600"
+        >
+          <a
+            href="index.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Home</a
+          >
+          <a
+            href="page2.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >General Description</a
+          >
+          <a
+            href="page3.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >History</a
+          >
+          <a
+            href="page4.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Heroes</a
+          >
+          <a
+            href="page5.html"
+            class="text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Map</a
+          >
+          <a
+            href="page6.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Items</a
+          >
+          <a
+            href="page7.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            Mechanics</a
+          >
+          <a
+            href="page8.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Objectives
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="slide-container grid-pattern relative">
+      <!-- Header -->
+      <div
+        class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-600 via-yellow-500 to-red-600"
+      ></div>
+
+      <!-- Title Section -->
+      <div class="text-center pt-24 pb-4">
+        <h1
+          class="title-glow text-5xl font-black text-white mb-3"
+          style="font-family: 'Orbitron', monospace"
+        >
+          GAMEPLAY MECHANICS
+        </h1>
+        <div
+          class="w-32 h-1 bg-gradient-to-r from-red-500 to-yellow-500 mx-auto mb-3"
+        ></div>
+        <p
+          class="text-xl text-gray-300"
+          style="font-family: 'Rajdhani', sans-serif"
+        >
+          <i>Essential</i> <i>Skills</i> & <i>Strategic</i> <i>Systems</i>
+        </p>
+        <p
+          class="text-xl text-gray-300"
+          style="font-family: 'Rajdhani', sans-serif"
+        >
+          Dota 2 <strong>has</strong> <i>fundamental</i> mechanics every player
+          <strong>must master</strong>. <u>Additionally</u>, they
+          <strong>require</strong> <i>precise</i> moves and <i>quick</i> choices
+          to <strong>win</strong>.
+        </p>
+      </div>
+
+      <!-- Main Content Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 px-8 pb-6">
+        <!-- Last-Hitting -->
+        <div
+          class="mechanic-card rounded-2xl p-6"
+          style="animation-delay: 0.2s"
+        >
+          <div class="text-center mb-4">
+            <i class="fas fa-sword text-green-400 text-4xl mb-3"></i>
+            <h3
+              class="text-3xl font-bold text-white"
+              style="font-family: 'Orbitron', monospace"
+            >
+              LAST-HITTING
+            </h3>
+          </div>
+          <div class="space-y-3">
+            <div
+              class="bg-green-900 bg-opacity-30 rounded-lg p-3 border border-green-500 border-opacity-40"
+            >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <i class="fas fa-coins text-yellow-400 text-lg mr-2"></i>
+                  <span
+                    class="text-yellow-300 font-semibold"
+                    style="font-family: 'Rajdhani', sans-serif"
+                    >GOLD</span
+                  >
+                </div>
+                <div>
+                  <i class="fas fa-arrow-up text-blue-400 text-sm"></i>
+                </div>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Resource Gain</p>
+            </div>
+            <div class="bg-black bg-opacity-40 rounded p-2 text-center">
+              <i class="fas fa-clock text-orange-400 mr-1"></i>
+              <span
+                class="text-orange-300 text-sm font-semibold"
+                style="font-family: 'Rajdhani', sans-serif"
+                >TIMING</span
+              >
+            </div>
+          </div>
+          <div class="mt-4 text-center">
+            <div class="bg-gray-800 rounded-lg p-2">
+              <p
+                class="text-sm text-gray-300"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                <i class="fas fa-info-circle text-green-400 mr-1"></i>
+                <u>In summary</u>, <strong>timing</strong>
+                <i>precise</i> attacks <strong>is</strong> essential for
+                <i>maximum</i> efficiency.
+              </p>
+            </div>
+          </div>
+          <p
+            class="text-gray-300 mt-4 text-lg"
+            style="font-family: 'Rajdhani', sans-serif"
+          >
+            <u>Last-hitting</u> <strong>means</strong> <i>delivering</i> the
+            final blow for gold and experience. <u>This</u> <strong>is</strong>
+            <i>crucial</i> to <strong>buying</strong> items and
+            <strong>gaining</strong> an <i>economic</i> edge.
+          </p>
+        </div>
+
+        <!-- Denying -->
+        <div
+          class="mechanic-card rounded-2xl p-6"
+          style="animation-delay: 0.4s"
+        >
+          <div class="text-center mb-4">
+            <i class="fas fa-shield-alt text-red-400 text-4xl mb-3"></i>
+            <h3
+              class="text-3xl font-bold text-white"
+              style="font-family: 'Orbitron', monospace"
+            >
+              DENYING
+            </h3>
+          </div>
+          <div class="space-y-3">
+            <div
+              class="bg-red-900 bg-opacity-30 rounded-lg p-3 border border-red-500 border-opacity-40"
+            >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <i class="fas fa-user-slash text-purple-400 text-lg mr-2"></i>
+                  <span
+                    class="text-purple-300 font-semibold"
+                    style="font-family: 'Rajdhani', sans-serif"
+                    >DENY XP</span
+                  >
+                </div>
+                <div>
+                  <i class="fas fa-minus-circle text-orange-400 text-sm"></i>
+                </div>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Resource Control</p>
+            </div>
+            <div class="bg-black bg-opacity-40 rounded p-2 text-center">
+              <i class="fas fa-brain text-purple-400 mr-1"></i>
+              <span
+                class="text-purple-300 text-sm font-semibold"
+                style="font-family: 'Rajdhani', sans-serif"
+                >LANE CONTROL</span
+              >
+            </div>
+          </div>
+          <div class="mt-4 text-center">
+            <div class="bg-gray-800 rounded-lg p-2">
+              <p
+                class="text-sm text-gray-300"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                <i class="fas fa-info-circle text-red-400 mr-1"></i>
+                <u>Additionally</u>, <strong>denying</strong>
+                <i>prevents</i> the enemy from <strong>gaining</strong>
+                <i>valuable</i> resources.
+              </p>
+            </div>
+          </div>
+          <p
+            class="text-gray-300 mt-4 text-lg"
+            style="font-family: 'Rajdhani', sans-serif"
+          >
+            <u>Denying</u> <strong>means</strong> <strong>killing</strong> your
+            own <i>low-health</i> creeps to <strong>prevent</strong> enemy gold
+            and experience. <u>This</u> <strong>is</strong> <i>essential</i> for
+            <strong>controlling</strong> the lane and
+            <strong>limiting</strong> opponents.
+          </p>
+        </div>
+
+        <!-- Positioning -->
+        <div
+          class="mechanic-card rounded-2xl p-6"
+          style="animation-delay: 0.6s"
+        >
+          <div class="text-center mb-4">
+            <i class="fas fa-map-marker-alt text-blue-400 text-4xl mb-3"></i>
+            <h3
+              class="text-3xl font-bold text-white"
+              style="font-family: 'Orbitron', monospace"
+            >
+              POSITIONING
+            </h3>
+          </div>
+          <div class="space-y-3">
+            <div
+              class="bg-blue-900 bg-opacity-30 rounded-lg p-3 border border-blue-500 border-opacity-40"
+            >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <i class="fas fa-running text-green-400 text-lg mr-2"></i>
+                  <span
+                    class="text-green-300 font-semibold"
+                    style="font-family: 'Rajdhani', sans-serif"
+                    >ESCAPE ROUTES</span
+                  >
+                </div>
+                <div>
+                  <i class="fas fa-eye text-purple-400 text-sm"></i>
+                </div>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Tactical Awareness</p>
+            </div>
+            <div class="bg-black bg-opacity-40 rounded p-2 text-center">
+              <i class="fas fa-balance-scale text-yellow-400 mr-1"></i>
+              <span
+                class="text-yellow-300 text-sm font-semibold"
+                style="font-family: 'Rajdhani', sans-serif"
+                >ADVANTAGE</span
+              >
+            </div>
+          </div>
+          <div class="mt-4 text-center">
+            <div class="bg-gray-800 rounded-lg p-2">
+              <p
+                class="text-sm text-gray-300"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                <i class="fas fa-info-circle text-blue-400 mr-1"></i>
+                <u>Furthermore</u>, <strong>good</strong> <i>positioning</i>
+                <strong>minimizes</strong> risks and
+                <strong>maximizes</strong> opportunities.
+              </p>
+            </div>
+          </div>
+          <p
+            class="text-gray-300 mt-4 text-lg"
+            style="font-family: 'Rajdhani', sans-serif"
+          >
+            <u>Positioning</u> <strong>means</strong> <strong>moving</strong>
+            <i>correctly</i> and <strong>working</strong> with teammates to
+            <strong>survive</strong> and <strong>win</strong>.
+            <u>Good positioning</u> <strong>is</strong> <i>vital</i> for
+            <strong>avoiding</strong> danger and <strong>using</strong>
+            <i>strategic</i> moments.
+          </p>
+        </div>
+      </div>
+
+      <!-- Subcomponents Section -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-8 pb-6">
+        <!-- Combat Subcomponent -->
+        <div
+          class="mechanic-card rounded-3xl p-6"
+          style="animation-delay: 0.8s"
+        >
+          <div class="combat-zone rounded-2xl p-5">
+            <div class="text-center mb-4">
+              <i class="fas fa-fist-raised text-red-400 text-5xl mb-3"></i>
+              <h3
+                class="text-3xl font-bold text-white"
+                style="font-family: 'Orbitron', monospace"
+              >
+                COMBAT SYSTEM
+              </h3>
+              <div class="w-20 h-1 bg-red-500 mx-auto mt-2"></div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <div class="bg-black bg-opacity-50 rounded-lg p-3 text-center">
+                <i
+                  class="fas fa-tachometer-alt text-orange-400 text-xl mb-1"
+                ></i>
+                <h4
+                  class="text-orange-300 font-bold text-sm"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  ATTACK SPEED
+                </h4>
+                <p
+                  class="text-gray-400 text-xs"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  DPS Optimization
+                </p>
+              </div>
+
+              <div class="bg-black bg-opacity-50 rounded-lg p-3 text-center">
+                <i class="fas fa-bolt text-yellow-400 text-xl mb-1"></i>
+                <h4
+                  class="text-yellow-300 font-bold text-sm"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  DAMAGE
+                </h4>
+                <p
+                  class="text-gray-400 text-xs"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  Physical/Magical
+                </p>
+              </div>
+
+              <div class="bg-black bg-opacity-50 rounded-lg p-3 text-center">
+                <i class="fas fa-shield text-blue-400 text-xl mb-1"></i>
+                <h4
+                  class="text-blue-300 font-bold text-sm"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  ARMOR
+                </h4>
+                <p
+                  class="text-gray-400 text-xs"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  Damage Reduction
+                </p>
+              </div>
+
+              <div class="bg-black bg-opacity-50 rounded-lg p-3 text-center">
+                <i class="fas fa-magic text-purple-400 text-xl mb-1"></i>
+                <h4
+                  class="text-purple-300 font-bold text-sm"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  ABILITIES
+                </h4>
+                <p
+                  class="text-gray-400 text-xs"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  Skill Combinations
+                </p>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <div class="bg-red-800 bg-opacity-40 rounded-lg p-2">
+                <p
+                  class="text-sm text-red-300 font-semibold"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  <i class="fas fa-calculator text-red-400 mr-1"></i>
+                  COMPLEX DAMAGE CALCULATION
+                </p>
+              </div>
+            </div>
+          </div>
+          <br />
+          <p
+            class="text-xl text-gray-300"
+            style="font-family: 'Rajdhani', sans-serif"
+          >
+            Fighting in Dota 2 <b>requires</b> <i>precise</i> use of abilities
+            and <i>smart</i> decisions in real time. You need to know each
+            hero’s strengths and weaknesses to decide when to <b>engage</b>,
+            <b>retreat</b>, or <b>protect</b> your allies. Mastering these
+            choices is essential for success in battles.
+          </p>
+        </div>
+
+        <!-- Vision Subcomponent -->
+        <div class="mechanic-card rounded-3xl p-6" style="animation-delay: 1s">
+          <div class="vision-area rounded-2xl p-5">
+            <div class="text-center mb-4">
+              <i class="fas fa-eye text-purple-400 text-5xl mb-3"></i>
+              <h3
+                class="text-3xl font-bold text-white"
+                style="font-family: 'Orbitron', monospace"
+              >
+                VISION SYSTEM
+              </h3>
+              <div class="w-20 h-1 bg-purple-500 mx-auto mt-2"></div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <div class="bg-black bg-opacity-50 rounded-lg p-3 text-center">
+                <i class="fas fa-lightbulb text-yellow-400 text-xl mb-1"></i>
+                <h4
+                  class="text-yellow-300 font-bold text-sm"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  WARDS
+                </h4>
+                <p
+                  class="text-gray-400 text-xs"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  Observer/Sentry
+                </p>
+              </div>
+
+              <div class="bg-black bg-opacity-50 rounded-lg p-3 text-center">
+                <i class="fas fa-search text-blue-400 text-xl mb-1"></i>
+                <h4
+                  class="text-blue-300 font-bold text-sm"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  TRUE SIGHT
+                </h4>
+                <p
+                  class="text-gray-400 text-xs"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  Detect Invisible
+                </p>
+              </div>
+
+              <div class="bg-black bg-opacity-50 rounded-lg p-3 text-center">
+                <i class="fas fa-circle text-green-400 text-xl mb-1"></i>
+                <h4
+                  class="text-green-300 font-bold text-sm"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  DAY/NIGHT
+                </h4>
+                <p
+                  class="text-gray-400 text-xs"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  Vision Range
+                </p>
+              </div>
+
+              <div class="bg-black bg-opacity-50 rounded-lg p-3 text-center">
+                <i class="fas fa-user-secret text-gray-400 text-xl mb-1"></i>
+                <h4
+                  class="text-gray-300 font-bold text-sm"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  FOG OF WAR
+                </h4>
+                <p
+                  class="text-gray-400 text-xs"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  Unknown Areas
+                </p>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <div class="bg-purple-800 bg-opacity-40 rounded-lg p-2">
+                <p
+                  class="text-sm text-purple-300 font-semibold"
+                  style="font-family: 'Rajdhani', sans-serif"
+                >
+                  <i class="fas fa-chess-king text-purple-400 mr-1"></i>
+                  INFORMATION IS POWER
+                </p>
+              </div>
+            </div>
+          </div>
+          <br />
+          <p
+            class="text-xl text-gray-300"
+            style="font-family: 'Rajdhani', sans-serif"
+          >
+            Controlling the map <b>is</b> <i>key</i> to strategy. Players
+            <b>place</b> wards in <i>strategic</i> spots and
+            <b>use</b> abilities to <b>reveal</b> <i>hidden</i> areas. This
+            <b>helps</b> them <b>avoid</b> ambushes, <b>plan</b> attacks, and
+            <b>control</b> <i>important</i> objectives like Roshan or towers.
+          </p>
+        </div>
+      </div>
+
+      <!-- Skill Progression Bar -->
+      <div class="px-8 pb-4">
+        <div
+          class="mechanic-card rounded-2xl p-4"
+          style="animation-delay: 1.2s"
+        >
+          <div class="text-center mb-3">
+            <h3
+              class="text-2xl font-bold text-white"
+              style="font-family: 'Orbitron', monospace"
+            >
+              <i class="fas fa-trophy text-yellow-400 mr-2"></i>
+              SKILL MASTERY PROGRESSION
+            </h3>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="text-center">
+              <div class="bg-gray-800 rounded p-3 border border-gray-600">
+                <i class="fas fa-seedling text-gray-400 text-2xl mb-2"></i>
+                <h4
+                  class="text-gray-300 font-bold text-sm"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  BEGINNER
+                </h4>
+                <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
+                  <div
+                    class="skill-meter bg-red-500 h-2 rounded-full"
+                    style="width: 30%"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <div class="bg-blue-800 rounded p-3 border border-blue-600">
+                <i class="fas fa-user text-blue-400 text-2xl mb-2"></i>
+                <h4
+                  class="text-blue-300 font-bold text-sm"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  INTERMEDIATE
+                </h4>
+                <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
+                  <div
+                    class="skill-meter bg-yellow-500 h-2 rounded-full"
+                    style="width: 60%"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <div class="bg-purple-800 rounded p-3 border border-purple-600">
+                <i class="fas fa-star text-purple-400 text-2xl mb-2"></i>
+                <h4
+                  class="text-purple-300 font-bold text-sm"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  ADVANCED
+                </h4>
+                <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
+                  <div
+                    class="skill-meter bg-green-500 h-2 rounded-full"
+                    style="width: 85%"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <div class="bg-yellow-800 rounded p-3 border border-yellow-600">
+                <i class="fas fa-crown text-yellow-400 text-2xl mb-2"></i>
+                <h4
+                  class="text-yellow-300 font-bold text-sm"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  PROFESSIONAL
+                </h4>
+                <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
+                  <div
+                    class="skill-meter bg-purple-500 h-2 rounded-full"
+                    style="width: 100%"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-3">
+            <p
+              class="text-lg text-white font-semibold"
+              style="font-family: 'Orbitron', monospace"
+            >
+              <i
+                class="mechanic-flow fas fa-arrow-right text-green-400 mr-2"
+              ></i>
+              MECHANICAL SKILL DETERMINES GAME IMPACT
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="footer py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <!-- Logo and Site Name -->
+          <div class="flex items-center mb-4 md:mb-0">
+            <img
+              src="https://www.citypng.com/public/uploads/preview/hd-dota-2-official-logo-png-701751694788589vbfyq561nz.png"
+              alt="Dota 2 Logo"
+              class="h-10 w-auto"
+            />
+            <div class="ml-3">
+              <p
+                class="text-lg font-bold text-white"
+                style="font-family: 'Orbitron', monospace"
+              >
+                DOTA 2 COMPONENTS
+              </p>
+              <p
+                class="text-xs text-gray-400"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                Educational Project - 2025
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Horizontal Separator -->
+        <div
+          class="h-px w-full bg-gradient-to-r from-transparent via-red-600 to-transparent my-6"
+        ></div>
+
+        <!-- Copyright and Links -->
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p
+            class="text-gray-500 text-sm mb-4 md:mb-0"
+            style="font-family: 'Rajdhani', sans-serif"
+          >
+            © 2025 GASPAR ALMONACID YHEFRY MICHAEL - Educational project.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        mobileMenuButton.addEventListener("click", function () {
+          if (mobileMenu.classList.contains("hidden")) {
+            mobileMenu.classList.remove(
+              "hidden",
+              "transform",
+              "scale-95",
+              "opacity-0"
+            );
+            mobileMenu.classList.add("transform", "scale-100", "opacity-100");
+          } else {
+            mobileMenu.classList.add(
+              "hidden",
+              "transform",
+              "scale-95",
+              "opacity-0"
+            );
+            mobileMenu.classList.remove(
+              "transform",
+              "scale-100",
+              "opacity-100"
+            );
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

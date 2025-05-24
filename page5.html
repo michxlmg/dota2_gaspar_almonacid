@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Component 2 - The Map</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .slide-container {
+        width: 100vw;
+        min-height: 100vh;
+        background-color: #000;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .title-glow {
+        text-shadow: 0 0 20px rgba(220, 38, 38, 0.8),
+          0 0 40px rgba(220, 38, 38, 0.4);
+        animation: pulse-glow 3s ease-in-out infinite alternate;
+      }
+
+      .map-card {
+        background: linear-gradient(
+          145deg,
+          rgba(0, 0, 0, 0.8),
+          rgba(26, 26, 26, 0.6)
+        );
+        border: 2px solid rgba(220, 38, 38, 0.3);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        animation: slide-in 1s ease-out forwards;
+      }
+
+      .map-card:hover {
+        border-color: rgba(251, 191, 36, 0.8);
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
+      }
+
+      .lane-indicator {
+        animation: lane-pulse 4s ease-in-out infinite alternate;
+      }
+
+      .roshan-highlight {
+        background: linear-gradient(
+          45deg,
+          rgba(139, 69, 19, 0.4),
+          rgba(160, 82, 45, 0.4)
+        );
+        border: 2px solid rgba(210, 180, 140, 0.6);
+        animation: roshan-glow 3s ease-in-out infinite alternate;
+      }
+
+      .jungle-zone {
+        background: linear-gradient(
+          45deg,
+          rgba(34, 139, 34, 0.3),
+          rgba(0, 100, 0, 0.3)
+        );
+        border: 2px solid rgba(34, 139, 34, 0.6);
+        animation: jungle-sway 5s ease-in-out infinite;
+      }
+
+      .strategic-point {
+        animation: strategic-ping 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse-glow {
+        from {
+          text-shadow: 0 0 20px rgba(220, 38, 38, 0.8),
+            0 0 40px rgba(220, 38, 38, 0.4);
+        }
+        to {
+          text-shadow: 0 0 30px rgba(220, 38, 38, 1),
+            0 0 60px rgba(220, 38, 38, 0.6);
+        }
+      }
+
+      @keyframes slide-in {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes lane-pulse {
+        from {
+          box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+          border-color: rgba(59, 130, 246, 0.6);
+        }
+        to {
+          box-shadow: 0 0 25px rgba(147, 51, 234, 0.6);
+          border-color: rgba(147, 51, 234, 0.8);
+        }
+      }
+
+      @keyframes roshan-glow {
+        from {
+          box-shadow: 0 0 20px rgba(210, 180, 140, 0.5);
+          border-color: rgba(210, 180, 140, 0.6);
+        }
+        to {
+          box-shadow: 0 0 35px rgba(255, 215, 0, 0.8);
+          border-color: rgba(255, 215, 0, 1);
+        }
+      }
+
+      @keyframes jungle-sway {
+        0%,
+        100% {
+          transform: translateX(0px);
+        }
+        25% {
+          transform: translateX(2px);
+        }
+        75% {
+          transform: translateX(-2px);
+        }
+      }
+
+      @keyframes strategic-ping {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 0.8;
+        }
+      }
+
+      .grid-pattern {
+        background-image: linear-gradient(
+            rgba(220, 38, 38, 0.1) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(220, 38, 38, 0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: grid-move 20s linear infinite;
+      }
+
+      @keyframes grid-move {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 50px 50px;
+        }
+      }
+
+      .map-overview {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("https://media.steelseriescdn.com/blog/posts/dota-2-viewers-guide/9cfa1f590121412686cc1387262cccd5.png")
+            center/cover;
+        animation: map-float 6s ease-in-out infinite alternate;
+      }
+
+      @keyframes map-float {
+        from {
+          transform: translateY(-3px);
+        }
+        to {
+          transform: translateY(3px);
+        }
+      }
+
+      .minimap-dot {
+        animation: dot-blink 1.5s ease-in-out infinite;
+      }
+
+      @keyframes dot-blink {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.6;
+          transform: scale(0.8);
+        }
+      }
+
+      .tower-icon {
+        animation: tower-guard 4s ease-in-out infinite;
+      }
+
+      @keyframes tower-guard {
+        0%,
+        100% {
+          transform: rotate(0deg);
+        }
+        25% {
+          transform: rotate(5deg);
+        }
+        75% {
+          transform: rotate(-5deg);
+        }
+      }
+
+      /* Navbar Styles */
+      .navbar {
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 2px solid rgba(220, 38, 38, 0.5);
+        z-index: 50;
+      }
+
+      .nav-link {
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #dc2626, #fbbf24);
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      .mobile-menu {
+        transition: transform 0.3s ease;
+      }
+
+      /* Footer Styles */
+      .footer {
+        background-color: rgba(0, 0, 0, 0.9);
+        border-top: 2px solid rgba(220, 38, 38, 0.5);
+      }
+
+      .social-icon {
+        transition: all 0.3s ease;
+      }
+
+      .social-icon:hover {
+        transform: translateY(-5px);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar fixed top-0 left-0 w-full">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <div class="flex items-center">
+            <a href="index.html" class="flex-shrink-0">
+              <img
+                class="h-10 w-auto"
+                src="https://www.citypng.com/public/uploads/preview/hd-dota-2-official-logo-png-701751694788589vbfyq561nz.png"
+                alt="Dota 2 Logo"
+              />
+            </a>
+            <span
+              class="ml-3 text-xl font-bold text-white"
+              style="font-family: 'Orbitron', monospace"
+              >DOTA 2</span
+            >
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <a
+                href="index.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Home</a
+              >
+              <a
+                href="page2.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >General Description</a
+              >
+              <a
+                href="page3.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >History</a
+              >
+              <a
+                href="page4.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Heroes</a
+              >
+              <a
+                href="page5.html"
+                class="nav-link text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Map</a
+              >
+              <a
+                href="page6.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Items</a
+              >
+              <a
+                href="page7.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Mechanics</a
+              >
+              <a
+                href="page8.html"
+                class="nav-link text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Objectives</a
+              >
+            </div>
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden">
+            <button
+              id="mobile-menu-button"
+              class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+            >
+              <i class="fas fa-bars text-xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile menu, hidden by default -->
+      <div
+        id="mobile-menu"
+        class="mobile-menu md:hidden hidden transform scale-95 opacity-0 transition-all duration-300 ease-in-out"
+      >
+        <div
+          class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black bg-opacity-90 border-t border-red-600"
+        >
+          <a
+            href="index.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Home</a
+          >
+          <a
+            href="page2.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >General Description</a
+          >
+          <a
+            href="page3.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >History</a
+          >
+          <a
+            href="page4.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Heroes</a
+          >
+          <a
+            href="page5.html"
+            class="text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Map</a
+          >
+          <a
+            href="page6.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Items</a
+          >
+          <a
+            href="page7.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Mechanics</a
+          >
+          <a
+            href="page8.html"
+            class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Objectives</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <div class="slide-container grid-pattern relative">
+      <!-- Header -->
+      <div
+        class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-600 via-yellow-500 to-red-600"
+      ></div>
+
+      <!-- Title Section -->
+      <div class="text-center pt-24 pb-4">
+        <h1
+          class="title-glow text-5xl font-black text-white mb-3"
+          style="font-family: 'Orbitron', monospace"
+        >
+          THE MAP
+        </h1>
+        <div
+          class="w-32 h-1 bg-gradient-to-r from-red-500 to-yellow-500 mx-auto mb-3"
+        ></div>
+        <p
+          class="text-xl text-gray-300"
+          style="font-family: 'Rajdhani', sans-serif"
+        >
+          <i>Strategic</i> Battlefield Layout
+        </p>
+        <p
+          class="text-xl text-gray-300"
+          style="font-family: 'Rajdhani', sans-serif"
+        >
+          The Dota 2 map <strong>is</strong> a <i>symmetrical</i> battlefield
+          with three <i>distinct</i> lanes: top, middle, and bottom.
+          <u>Additionally</u>, it <strong>includes</strong> <i>dense</i> jungle
+          areas and the <i>fortified</i> bases of each team: Radiant and Dire.
+          <u>Furthermore</u>, the map <strong>features</strong>
+          <i>crucial</i> strategic points that teams
+          <strong>must</strong> control to <strong>gain</strong> an advantage.
+        </p>
+      </div>
+
+      <!-- Main Content Grid -->
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 px-8 pb-6">
+        <!-- Lanes Section -->
+        <div class="map-card rounded-2xl p-6" style="animation-delay: 0.2s">
+          <div class="text-center mb-4">
+            <i class="fas fa-road text-blue-400 text-4xl mb-3"></i>
+            <h3
+              class="text-3xl font-bold text-white"
+              style="font-family: 'Orbitron', monospace"
+            >
+              LANES
+            </h3>
+          </div>
+
+          <div class="space-y-3">
+            <div
+              class="lane-indicator bg-blue-900 bg-opacity-30 rounded-lg p-3 border border-blue-500 border-opacity-40"
+            >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <i class="fas fa-arrow-up text-blue-400 text-lg mr-2"></i>
+                  <span
+                    class="text-blue-300 font-semibold"
+                    style="font-family: 'Rajdhani', sans-serif"
+                    >TOP LANE</span
+                  >
+                </div>
+                <div class="tower-icon">
+                  <i class="fas fa-chess-rook text-gray-400 text-sm"></i>
+                </div>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Offlane / Hard Lane</p>
+            </div>
+
+            <div
+              class="lane-indicator bg-yellow-900 bg-opacity-30 rounded-lg p-3 border border-yellow-500 border-opacity-40"
+            >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <i
+                    class="fas fa-arrows-alt-h text-yellow-400 text-lg mr-2"
+                  ></i>
+                  <span
+                    class="text-yellow-300 font-semibold"
+                    style="font-family: 'Rajdhani', sans-serif"
+                    >MID LANE</span
+                  >
+                </div>
+                <div class="tower-icon">
+                  <i class="fas fa-chess-rook text-gray-400 text-sm"></i>
+                </div>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Solo / Ganker</p>
+            </div>
+
+            <div
+              class="lane-indicator bg-green-900 bg-opacity-30 rounded-lg p-3 border border-green-500 border-opacity-40"
+            >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <i class="fas fa-arrow-down text-green-400 text-lg mr-2"></i>
+                  <span
+                    class="text-green-300 font-semibold"
+                    style="font-family: 'Rajdhani', sans-serif"
+                    >BOT LANE</span
+                  >
+                </div>
+                <div class="tower-icon">
+                  <i class="fas fa-chess-rook text-gray-400 text-sm"></i>
+                </div>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Safe Lane / Farm</p>
+            </div>
+          </div>
+
+          <div class="mt-4 text-center">
+            <div class="bg-gray-800 rounded-lg p-2">
+              <p
+                class="text-sm text-gray-300"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                <i class="fas fa-info-circle text-blue-400 mr-1"></i>
+                3 Main Paths to Enemy Base
+              </p>
+            </div>
+          </div>
+          <p
+            class="text-gray-300 mt-4 text-lg"
+            style="font-family: 'Rajdhani', sans-serif"
+          >
+            These <strong>are</strong> the main paths where creeps
+            (AI-controlled units) <strong>move</strong>. Heroes
+            <strong>fight</strong> in <i>strategic</i> lanes to
+            <strong>earn</strong> gold and experience. <u>Moreover</u>, each
+            lane <strong>has</strong> <i>defensive</i> towers that
+            <strong>protect</strong> the area and <strong>offer</strong>
+            <i>safe</i> zones for allies.
+          </p>
+        </div>
+
+        <!-- Jungle Section -->
+        <div class="map-card rounded-2xl p-6" style="animation-delay: 0.4s">
+          <div class="text-center mb-4">
+            <i class="fas fa-tree text-green-400 text-4xl mb-3"></i>
+            <h3
+              class="text-3xl font-bold text-white"
+              style="font-family: 'Orbitron', monospace"
+            >
+              JUNGLE
+            </h3>
+          </div>
+
+          <div class="space-y-3">
+            <div class="jungle-zone rounded-lg p-3">
+              <div class="text-center mb-2">
+                <i class="fas fa-paw text-green-400 text-2xl"></i>
+                <h4
+                  class="text-green-300 font-bold text-lg"
+                  style="font-family: 'Orbitron', monospace"
+                >
+                  NEUTRAL CREEPS
+                </h4>
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-center">
+                <div class="bg-black bg-opacity-40 rounded p-2">
+                  <i class="fas fa-shield-alt text-blue-400 text-lg"></i>
+                  <p
+                    class="text-xs text-blue-300"
+                    style="font-family: 'Rajdhani', sans-serif"
+                  >
+                    ANCIENT
+                  </p>
+                </div>
+                <div class="bg-black bg-opacity-40 rounded p-2">
+                  <i class="fas fa-fist-raised text-red-400 text-lg"></i>
+                  <p
+                    class="text-xs text-red-300"
+                    style="font-family: 'Rajdhani', sans-serif"
+                  >
+                    LARGE
+                  </p>
+                </div>
+                <div class="bg-black bg-opacity-40 rounded p-2">
+                  <i class="fas fa-running text-yellow-400 text-lg"></i>
+                  <p
+                    class="text-xs text-yellow-300"
+                    style="font-family: 'Rajdhani', sans-serif"
+                  >
+                    MEDIUM
+                  </p>
+                </div>
+                <div class="bg-black bg-opacity-40 rounded p-2">
+                  <i class="fas fa-bug text-green-400 text-lg"></i>
+                  <p
+                    class="text-xs text-green-300"
+                    style="font-family: 'Rajdhani', sans-serif"
+                  >
+                    SMALL
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-lg p-2 text-center">
+              <p
+                class="text-sm text-gray-300"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                <i class="fas fa-skull text-red-400 mr-1"></i>
+                Neutral Camps & Resources
+              </p>
+            </div>
+          </div>
+          <p
+            class="text-gray-300 mt-4 text-lg"
+            style="font-family: 'Rajdhani', sans-serif"
+          >
+            The jungle <strong>holds</strong> <i>valuable</i> neutral creep
+            camps that <strong>offer</strong> extra resources. Heroes
+            <strong>farm</strong> these areas to
+            <strong>gain</strong> additional gold and experience.
+            <u>Additionally</u>, the jungle <strong>provides</strong>
+            <i>hidden</i> paths for <i>strategic</i> moves and surprise attacks.
+          </p>
+        </div>
+
+        <!-- Roshan Section -->
+        <div class="map-card rounded-2xl p-6" style="animation-delay: 0.6s">
+          <div class="text-center mb-4">
+            <i class="fas fa-dragon text-orange-400 text-4xl mb-3"></i>
+            <h3
+              class="text-3xl font-bold text-white"
+              style="font-family: 'Orbitron', monospace"
+            >
+              ROSHAN
+            </h3>
+          </div>
+
+          <div class="roshan-highlight rounded-xl p-4 mb-4">
+            <div class="text-center">
+              <h4
+                class="text-yellow-300 font-bold text-lg mb-2"
+                style="font-family: 'Orbitron', monospace"
+              >
+                IMMORTAL BOSS
+              </h4>
+              <div class="grid grid-cols-1 gap-2">
+                <div class="bg-black bg-opacity-40 rounded p-2">
+                  <i class="fas fa-gem text-purple-400 mr-2"></i>
+                  <span
+                    class="text-purple-300 text-sm"
+                    style="font-family: 'Rajdhani', sans-serif"
+                    >Aegis of Immortal</span
+                  >
+                </div>
+                <div class="bg-black bg-opacity-40 rounded p-2">
+                  <i class="fas fa-cheese text-yellow-400 mr-2"></i>
+                  <span
+                    class="text-yellow-300 text-sm"
+                    style="font-family: 'Rajdhani', sans-serif"
+                    >Cheese (2nd Kill)</span
+                  >
+                </div>
+                <div class="bg-black bg-opacity-40 rounded p-2">
+                  <i class="fas fa-scroll text-blue-400 mr-2"></i>
+                  <span
+                    class="text-blue-300 text-sm"
+                    style="font-family: 'Rajdhani', sans-serif"
+                    >Aghanim's Shard</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-red-900 bg-opacity-30 rounded-lg p-2 text-center">
+            <p
+              class="text-sm text-red-300"
+              style="font-family: 'Rajdhani', sans-serif"
+            >
+              <i class="fas fa-clock text-red-400 mr-1"></i>
+              Respawns: 8-11 Minutes
+            </p>
+          </div>
+          <p
+            class="text-gray-300 mt-4 text-xl"
+            style="font-family: 'Rajdhani', sans-serif"
+          >
+            Roshan is the <i>most powerful</i> neutral monster. Defeating him
+            grants the <i>Aegis of the Immortal</i>, an item that
+            <strong>revives</strong> the hero once.
+          </p>
+        </div>
+      </div>
+
+      <!-- Map Overview Section -->
+      <div class="px-8 pb-6">
+        <div
+          class="map-overview rounded-3xl p-6 border-2 border-yellow-500 border-opacity-40"
+          style="animation-delay: 0.8s"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="text-center">
+              <div class="strategic-point">
+                <i class="fas fa-home text-blue-400 text-3xl mb-2"></i>
+              </div>
+              <h4
+                class="text-blue-300 font-bold"
+                style="font-family: 'Orbitron', monospace"
+              >
+                ANCIENT
+              </h4>
+              <p
+                class="text-xs text-gray-400"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                Main Objective
+              </p>
+              <div
+                class="minimap-dot w-2 h-2 bg-blue-400 rounded-full mx-auto mt-1"
+              ></div>
+            </div>
+
+            <div class="text-center">
+              <div class="strategic-point">
+                <i class="fas fa-fort-awesome text-red-400 text-3xl mb-2"></i>
+              </div>
+              <h4
+                class="text-red-300 font-bold"
+                style="font-family: 'Orbitron', monospace"
+              >
+                TOWERS
+              </h4>
+              <p
+                class="text-xs text-gray-400"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                Defense Structure
+              </p>
+              <div
+                class="minimap-dot w-2 h-2 bg-red-400 rounded-full mx-auto mt-1"
+              ></div>
+            </div>
+
+            <div class="text-center">
+              <div class="strategic-point">
+                <i class="fas fa-building text-yellow-400 text-3xl mb-2"></i>
+              </div>
+              <h4
+                class="text-yellow-300 font-bold"
+                style="font-family: 'Orbitron', monospace"
+              >
+                BARRACKS
+              </h4>
+              <p
+                class="text-xs text-gray-400"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                Super Creeps
+              </p>
+              <div
+                class="minimap-dot w-2 h-2 bg-yellow-400 rounded-full mx-auto mt-1"
+              ></div>
+            </div>
+
+            <div class="text-center">
+              <div class="strategic-point">
+                <i class="fas fa-eye text-purple-400 text-3xl mb-2"></i>
+              </div>
+              <h4
+                class="text-purple-300 font-bold"
+                style="font-family: 'Orbitron', monospace"
+              >
+                RIVER
+              </h4>
+              <p
+                class="text-xs text-gray-400"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                Vision Control
+              </p>
+              <div
+                class="minimap-dot w-2 h-2 bg-purple-400 rounded-full mx-auto mt-1"
+              ></div>
+            </div>
+          </div>
+
+          <div class="text-center mt-4">
+            <p
+              class="text-lg text-white font-semibold"
+              style="font-family: 'Orbitron', monospace"
+            >
+              <i class="fas fa-map text-green-400 mr-2"></i>
+              ASYMMETRICAL MAP DESIGN
+            </p>
+            <p
+              class="text-sm text-gray-300"
+              style="font-family: 'Rajdhani', sans-serif"
+            >
+              Radiant vs Dire - Different Advantages
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-red-600 via-yellow-500 to-red-600"
+      ></div>
+
+      <!-- Corner decorations -->
+      <div class="absolute top-4 left-4 text-green-500 text-2xl opacity-30">
+        <i class="fas fa-map-marked-alt"></i>
+      </div>
+      <div class="absolute top-4 right-4 text-yellow-500 text-2xl opacity-30">
+        <i class="fas fa-compass"></i>
+      </div>
+      <div class="absolute bottom-4 left-4 text-blue-500 text-2xl opacity-30">
+        <i class="fas fa-route"></i>
+      </div>
+      <div class="absolute bottom-4 right-4 text-red-500 text-2xl opacity-30">
+        <i class="fas fa-chess-board"></i>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <!-- Logo and Site Name -->
+          <div class="flex items-center mb-4 md:mb-0">
+            <img
+              src="https://www.citypng.com/public/uploads/preview/hd-dota-2-official-logo-png-701751694788589vbfyq561nz.png"
+              alt="Dota 2 Logo"
+              class="h-10 w-auto"
+            />
+            <div class="ml-3">
+              <p
+                class="text-lg font-bold text-white"
+                style="font-family: 'Orbitron', monospace"
+              >
+                DOTA 2 COMPONENTS
+              </p>
+              <p
+                class="text-xs text-gray-400"
+                style="font-family: 'Rajdhani', sans-serif"
+              >
+                Educational Project - 2025
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Horizontal Separator -->
+        <div
+          class="h-px w-full bg-gradient-to-r from-transparent via-red-600 to-transparent my-6"
+        ></div>
+
+        <!-- Copyright and Links -->
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p
+            class="text-gray-500 text-sm mb-4 md:mb-0"
+            style="font-family: 'Rajdhani', sans-serif"
+          >
+            © 2025 GASPAR ALMONACID YHEFRY MICHAEL - Educational project.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        mobileMenuButton.addEventListener("click", function () {
+          if (mobileMenu.classList.contains("hidden")) {
+            mobileMenu.classList.remove(
+              "hidden",
+              "transform",
+              "scale-95",
+              "opacity-0"
+            );
+            mobileMenu.classList.add("transform", "scale-100", "opacity-100");
+          } else {
+            mobileMenu.classList.add(
+              "hidden",
+              "transform",
+              "scale-95",
+              "opacity-0"
+            );
+            mobileMenu.classList.remove(
+              "transform",
+              "scale-100",
+              "opacity-100"
+            );
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
